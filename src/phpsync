@@ -313,14 +313,19 @@ class Log {
 
     private static /*stream*/ $logIO;
     private static /*int*/ $errCount = 0;
+    private static /*bool*/ $started = false;
 
     public static function start(): void {
+        static::$started = true;
+
         if (!is_resource(static::$logIO) && LOG_FILEPATH !== null) {
             static::$logIO = fopen(LOG_FILEPATH, "w");
         }
     }
 
     public static function stop(): void {
+        static::$started = false;
+
         if (is_resource(static::$logIO)) {
             fclose(static::$logIO);
         }
@@ -341,9 +346,9 @@ class Log {
             $msg = sprintf($msg, ...$args);
         }
 
-        if (!is_resource(static::$logIO) || ((FLAGS & FLAG_QUIET) == 0 || $err)) {
+        if (!static::$started || ((FLAGS & FLAG_QUIET) == 0 || $err)) {
             if ($err) {
-                fwrite(STDERR, ((FLAGS & FLAG_QUIET) == 0 ? "\tE: " : "").$msg."\n");
+                fwrite(STDERR, "\tE: $msg\n");
 
             } else {
                 fwrite(STDIN, $msg."\n");
@@ -351,7 +356,7 @@ class Log {
         }
 
         if (is_resource(static::$logIO)) {
-            fwrite(static::$logIO, ((FLAGS & FLAG_QUIET) == 0 ? "\tE: " : "").$msg."\n");
+            fwrite(static::$logIO, ((FLAGS & FLAG_QUIET) != 0 ? "\tE: " : "").$msg."\n");
         }
     }
 
