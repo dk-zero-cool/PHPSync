@@ -53,10 +53,10 @@ for ($i=1; $i < count($argv); $i++) {
         case "--log":
             $defined["LOG_FILEPATH"] = $argv[++$i];
 
-            if (!file_exists($defined["LOG_FILEPATH"])) {
+            if (!file_exists($defined["LOG_FILEPATH"]) && !file_exists(dirname($defined["LOG_FILEPATH"]))) {
                 Log::write("The defined log path does not exist", $defined["LOG_FILEPATH"]); exit(1);
 
-            } else if (!is_writable($defined["LOG_FILEPATH"])) {
+            } else if ((file_exists($defined["LOG_FILEPATH"]) && !is_writable($defined["LOG_FILEPATH"])) || (!file_exists($defined["LOG_FILEPATH"]) && !is_writable(dirname($defined["LOG_FILEPATH"])))) {
                 Log::write("The log path '%s' must be writable", $defined["LOG_FILEPATH"]); exit(1);
 
             } else if (is_dir($defined["LOG_FILEPATH"])) {
