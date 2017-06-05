@@ -20,7 +20,7 @@
  * THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-define("PHPSYNC_VERSION", "1.0.0");
+define("PHPSYNC_VERSION", "1.0.1");
 
 define("FLAG_YES", 0b00001);
 define("FLAG_DELETE", 0b00010);
