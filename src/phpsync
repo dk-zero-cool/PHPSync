@@ -302,6 +302,8 @@ foreach ($ITERATORS as $round => $iterators) {
 Log::write("Sync finished with %d error(s)", Log::getErrCount());
 Log::stop();
 
+exit(Log::getErrCount());
+
 /**
  * =====================================================================
  * ---------------------------------------------------------------------
