@@ -356,7 +356,7 @@ class Log {
         }
 
         if (is_resource(static::$logIO)) {
-            fwrite(static::$logIO, ((FLAGS & FLAG_QUIET) != 0 ? "\tE: " : "").$msg."\n");
+            fwrite(static::$logIO, ($err ? "\tE: " : "").$msg."\n");
         }
     }
 
